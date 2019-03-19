@@ -20,12 +20,9 @@ COPY . ./
 RUN go install -v github.com/gazoomobile/dkron-executor-rabbitmq
 
 # final image
-FROM alpine
-LABEL maintainer "Bringg Devops <devops@bringg.com>"
+# re-use the pre-build dkron image but add in the built executor
+FROM dkron/dkron:v1.1.1
+ENV SHELL /bin/bash
 
-COPY --from=builder /tmp/dkron /opt/dkron
-COPY --from=builder /go/bin/dkron-executor-rabbitmq /opt/dkron
+COPY --from=builder /go/bin/dkron-executor-rabbitmq /opt/local/dkron/dkron-executor-rabbitmq
 
-ENV PATH=/opt/dkron:$PATH
-EXPOSE 8080 8946
-CMD ["dkron"]

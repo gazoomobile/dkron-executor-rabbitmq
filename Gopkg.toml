@@ -27,3 +27,9 @@
 [[override]]
   name = "github.com/hashicorp/go-hclog"
   revision = "61d530d6c27f994fb6c83b80f99a69c54125ec8a"
+
+# etcd requires version 8 of the codec
+# commit hash is taken from dkron
+[[override]]
+  name = "github.com/ugorji/go"
+  revision = "bdcc60b419d136a85cdf2e7cbcac34b3f1cd6e57"

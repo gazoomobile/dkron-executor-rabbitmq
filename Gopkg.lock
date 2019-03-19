@@ -426,8 +426,7 @@
 [[projects]]
   name = "github.com/ugorji/go"
   packages = ["codec"]
-  revision = "8fd0f8d918c8f0b52d0af210a812ba882cc31a1e"
-  version = "v1.1.2"
+  revision = "bdcc60b419d136a85cdf2e7cbcac34b3f1cd6e57"
 
 [[projects]]
   name = "github.com/victorcoder/dkron"
@@ -590,6 +589,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5bb2a32f7f1960174434599b90b4e78391ba0d5b66627a2514834a72e45d4d1d"
+  inputs-digest = "6176bf563b6635eac453e70653a01344b94550cd8aeb7dc6f6a32e57851186dc"
   solver-name = "gps-cdcl"
   solver-version = 1
