@@ -2,13 +2,13 @@ package main
 
 import (
 	"log"
+	"strconv"
 
 	"github.com/hashicorp/go-plugin"
 	"github.com/spf13/viper"
 	"github.com/streadway/amqp"
 	"github.com/victorcoder/dkron/dkron"
 	dkplugin "github.com/victorcoder/dkron/plugin"
-	"strconv"
 )
 
 type rabbitMQExecutor struct {
