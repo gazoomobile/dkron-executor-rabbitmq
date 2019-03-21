@@ -86,6 +86,12 @@
   version = "v1.18.4"
 
 [[projects]]
+  name = "github.com/cenkalti/backoff"
+  packages = ["."]
+  revision = "1e4cf3da559842a91afcb6ea6141451e6c30c618"
+  version = "v2.1.1"
+
+[[projects]]
   name = "github.com/coreos/etcd"
   packages = [
     "auth/authpb",
@@ -589,6 +595,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "6176bf563b6635eac453e70653a01344b94550cd8aeb7dc6f6a32e57851186dc"
+  inputs-digest = "b60b5285b58483461e2a7031db8a36b36081403ba8c850264bc2607b162de08f"
   solver-name = "gps-cdcl"
   solver-version = 1

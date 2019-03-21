@@ -3,13 +3,17 @@ package main
 import (
 	"log"
 	"strconv"
+	"time"
 
+	"github.com/cenkalti/backoff"
 	"github.com/hashicorp/go-plugin"
 	"github.com/spf13/viper"
 	"github.com/streadway/amqp"
 	"github.com/victorcoder/dkron/dkron"
 	dkplugin "github.com/victorcoder/dkron/plugin"
 )
+
+var maxBackoffTime = time.Minute * 5
 
 type rabbitMQExecutor struct {
 	conn *amqp.Connection
@@ -30,21 +34,28 @@ func (s *rabbitMQExecutor) connect() error {
 	connectionString := viper.GetString("rabbit_host")
 	log.Printf("[rabbitMQExecutor] connecting to rabbit [%s]", connectionString)
 
-	conn, err := amqp.Dial(connectionString)
-	if err != nil {
-		log.Printf("[rabbitMQExecutor] failed connecting to rabbitmq [%s]", connectionString)
-		return err
-	}
+	b := backoff.NewExponentialBackOff()
+	b.MaxElapsedTime = maxBackoffTime
+	return backoff.RetryNotify(func() error {
+		conn, err := amqp.Dial(connectionString)
+		if err != nil {
+			log.Printf("[rabbitMQExecutor] failed connecting to rabbitmq [%s]", connectionString)
+			return err
+		}
 
-	ch, err := conn.Channel()
-	if err != nil {
-		log.Printf("[rabbitMQExecutor] failed to open channel")
-		return err
-	}
+		ch, err := conn.Channel()
+		if err != nil {
+			log.Printf("[rabbitMQExecutor] failed to open channel")
+			return err
+		}
 
-	s.conn = conn
-	s.ch = ch
-	return nil
+		s.conn = conn
+		s.ch = ch
+		return nil
+	}, b, func(err error, t time.Duration) {
+		log.Printf("[rabbitMQExecutor] failed setting up RabbitMQ executor - trying again [%s]", connectionString)
+	})
+
 }
 
 func fetchConfig(config map[string]string, key string, defaultValue string) string {
