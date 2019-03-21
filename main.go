@@ -13,7 +13,11 @@ import (
 	dkplugin "github.com/victorcoder/dkron/plugin"
 )
 
-var maxBackoffTime = time.Minute * 5
+// maxBackoffTime waits up to x before giving up connecting to the RabbitMQ service
+// TODO currently, dkron waits for a plugin to connect for 1 minutes before giving
+// up. Waiting for 2 minutes will prevent dkron from starting up and if run in
+// kubernetes it should reboot the pod and try again.
+var maxBackoffTime = time.Minute * 2
 
 type rabbitMQExecutor struct {
 	conn *amqp.Connection
