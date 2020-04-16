@@ -1,0 +1,20 @@
+# build the staging application
+name: build-staging
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build-node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: gazoomobile/dkron-executor-rabbitmq/dkron-executor-rabbitmq
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          dockerfile: Dockerfile
+          snapshot: true
+          tags: 'latest,master'
